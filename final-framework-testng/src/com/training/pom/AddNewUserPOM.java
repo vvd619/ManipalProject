@@ -1,8 +1,12 @@
 package com.training.pom;
 
 import org.openqa.selenium.Alert;
+import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.Select;
@@ -10,6 +14,7 @@ import org.openqa.selenium.support.ui.Select;
 
 public class AddNewUserPOM {
 private WebDriver driver; 
+JavascriptExecutor js = (JavascriptExecutor)driver;
 	
 	public AddNewUserPOM(WebDriver driver) {
 		this.driver = driver; 
@@ -43,7 +48,7 @@ private WebDriver driver;
 	@FindBy(id="password")
 	public WebElement password; 
 	
-	@FindBy(xpath="//select[@id='status_select']")
+	@FindBy(xpath="//button[@data-id='status_select']")
 	public WebElement profile; 
 	
 	@FindBy(xpath="//button[@name='submit']")
@@ -126,6 +131,18 @@ private WebDriver driver;
 		Alert alt = driver.switchTo().alert();
 		alt.accept();
 		driver.switchTo().defaultContent();
+	}
+
+	public void SelectTrainerAsProfile() {
+		js. executeScript("arguments[0]. scrollIntoView(true);", profile);
+		js.executeScript("arguments[0].click();", profile);
+		Actions action = new Actions(driver); 
+		action.sendKeys(Keys.ARROW_UP).build().perform();
+		action.sendKeys(Keys.ENTER).build().perform();
+	}
+	
+	public void scrollToBottomOfPage() {
+		js.executeScript("window.scrollTo(0, document.body.scrollHeight)");
 	}
 
 }

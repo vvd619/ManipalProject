@@ -58,20 +58,24 @@ public class ELTC_021 {
 		driver.quit();
 	}
 
+	//Test Case Objective: To verify whether application allows admin to delete course from the course list
 	@Test
 	public void AddNewUserAsTrainer() throws InterruptedException {
-		Thread.sleep(3000);
+		//Verifying user should be on Admin Page
 		Assert.assertEquals(driver.getCurrentUrl(),
 				"http://elearningm1.upskills.in/main/admin/index.php","Verifying user should be on Admin Page");
 		screenShot.captureScreenShot("Second");
 		deletecoursePOM.clickcourselist();
+		//Verifying user list page should be displayed
 		Assert.assertEquals(driver.getCurrentUrl(), "http://elearningm1.upskills.in/main/admin/course_list.php",
 				"Verifying user list page should be displayed");
 		screenShot.captureScreenShot("Third");
 		deletecoursePOM.clickdeletefirstcourse();
+		//Verifying alert text
 		Assert.assertTrue(deletecoursePOM.getalerttext().equals("Please confirm your choice"),"Verifying alert text");
 		deletecoursePOM.alertAccept();
-		Assert.assertTrue((deletecoursePOM.alertInfo.getText()).equals("Deleted"),"Verifying user deleted");
+		//Verifying user deleted Successfully
+		Assert.assertTrue((deletecoursePOM.alertInfo.getText()).equals("Deleted"),"Verifying user deleted Successfully");
 		
 		
 

@@ -53,13 +53,16 @@ public class ELTC_019 {
 		driver.quit();
 	}
 
+	//Test Case Objective: To verify whether application allows admin to view details of user
 	@Test
 	public void UserDetails() {
 		adminPagePOM.clickAdmin();
+		//Verifying user should be on Admin Page
 		Assert.assertEquals("http://elearningm1.upskills.in/main/admin/", driver.getCurrentUrl(),
 				"Verifying user should be on Admin Page");
 		screenShot.captureScreenShot("Second");
 		adminPagePOM.clickuserList();
+		//Verifying registed user list should be displayed
 		Assert.assertEquals(adminPagePOM.searchsimplekeyword.isDisplayed(), true,
 				"Verifying registed user list should be displayed");
 		screenShot.captureScreenShot("Third");
@@ -67,6 +70,7 @@ public class ELTC_019 {
 		boolean val = (driver.getCurrentUrl()
 				.equals("http://elearningm1.upskills.in/main/admin/user_edit.php?user_id=774"))
 				& (adminPagePOM.firstname.isDisplayed());
+		//Verifying user details should be displayed
 		Assert.assertEquals(val, true, "Verifying user details should be displayed");
 		screenShot.captureScreenShot("Fourth");
 

@@ -1,5 +1,8 @@
 package com.training.sanity.tests;
 
+import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertTrue;
+
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Properties;
@@ -23,11 +26,11 @@ import com.training.pom.*;
 import com.training.utility.DriverFactory;
 import com.training.utility.DriverNames;
 
-public class ELTC_020 {
+public class ELTC_051 {
 	private WebDriver driver;
 	private String baseUrl;
 	private LoginPOM loginPOM;
-	private AddNewUserPOM addnewuserPOM;
+	private ModifyUserDetailsPOM modifyUserDetailsPOM;
 	private static Properties properties;
 	private ScreenShot screenShot;
 
@@ -42,11 +45,12 @@ public class ELTC_020 {
 	public void setUp() throws Exception {
 		driver = DriverFactory.getDriver(DriverNames.FIREFOX);
 		loginPOM = new LoginPOM(driver);
-		addnewuserPOM = new AddNewUserPOM(driver);
+		modifyUserDetailsPOM = new ModifyUserDetailsPOM(driver);
 		baseUrl = properties.getProperty("baseURL");
 		screenShot = new ScreenShot(driver);
 		// open the browser
 		driver.get(baseUrl);
+		driver.manage().window().maximize();
 		loginPOM.sendUserName("admin");
 		loginPOM.sendPassword("admin@123");
 		loginPOM.clickLoginBtn();
@@ -55,41 +59,35 @@ public class ELTC_020 {
 
 	@AfterMethod
 	public void tearDown() throws Exception {
-		addnewuserPOM.deletesercheduser.click();
-		addnewuserPOM.alertAccept();
-		Thread.sleep(1000);
 		driver.quit();
 	}
-//Test Case Objective:To verify whether application allows admin to add new user as a trainer by entering valid credentials in mandatory fields only
+//Test Case Objective:TO verify whether application allows admin to add classes, subscribe user to class, subscribe class to course & subscribe class to sessions
 	@Test
-	public void AddNewUserAsTrainer() throws InterruptedException {
+	public void AddNewcoursandclass() throws InterruptedException {
 		//Verifying user should be on Admin Page
 		Assert.assertEquals(driver.getCurrentUrl(), "http://elearningm1.upskills.in/main/admin/index.php",
 				"Verifying user should be on Admin Page");
 		screenShot.captureScreenShot("Second");
-		addnewuserPOM.clickAddAUser();
-		//Verifying Add User page should be displayed
-		Assert.assertEquals(addnewuserPOM.password.isDisplayed(), true, "Verifying Add User page should be displayed");
-		screenShot.captureScreenShot("Third");
-		//Entering data on add user page
-		addnewuserPOM.enterfirstname("vivek");
-		addnewuserPOM.enterlastname("Dhotre");
-		addnewuserPOM.enteremail("demo@demo.com");
-		addnewuserPOM.enterphone("1234567890");
-		addnewuserPOM.enteruserName("vivek1232");
-		addnewuserPOM.seelctenterpassword_radio();
-		addnewuserPOM.enterpassword("vivek");
-		addnewuserPOM.SelectTrainerAsProfile();
-		addnewuserPOM.scrollToBottomOfPage();
-		addnewuserPOM.clickSubmit();
-		//verifying pop up msg - The user has been added 
-		Assert.assertEquals(addnewuserPOM.alertInfo.getText(), "The user has been added: vivek Dhotre",
-				"verifying msg - The user has been added ");
-		addnewuserPOM.entersearchCriteria("vivek1232");
-		addnewuserPOM.ClickSearch();
-		//Verifying user added successfully in user list
-		Assert.assertEquals(addnewuserPOM.addeduser.isDisplayed(), true,
-				"Verifying user added successfully in user list");
+		//clicking user list link
+		modifyUserDetailsPOM.clickuserList();
+		//entering value in search sriteria
+		modifyUserDetailsPOM.entersearchvalue("Simba");
+		modifyUserDetailsPOM.clicksearchSubmit();
+		//click edit link of user
+		modifyUserDetailsPOM.clickeditlink_user();
+		//Clear email text value
+		modifyUserDetailsPOM.clearemailvalue();
+		//enter email text value
+		modifyUserDetailsPOM.enteremailvalue("val@v.com");
+		//clicking selecting radio option
+		modifyUserDetailsPOM.selectinactiveradiobutton();
+		//Clcking submit option
+		modifyUserDetailsPOM.clickusereditSubmit();
+		//Verifying user information updated successfully
+		Assert.assertEquals(modifyUserDetailsPOM.f_verifalertmessage("User updated: Simba V (simba)"), true,"Verifying user information updated successfully");
+		
+		
+		
 
 	}
 
