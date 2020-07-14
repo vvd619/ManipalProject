@@ -5,24 +5,30 @@ import java.util.List;
 import org.testng.annotations.DataProvider;
 
 import com.training.bean.LoginBean;
+import com.training.bean.RegisterUserBean;
 import com.training.dao.ELearningDAO;
 import com.training.readexcel.ApachePOIExcelRead;
 import com.training.readexcel.ReadExcel;
 
-public class LoginDataProviders {
+public class RegisterUserDataProviders {
 
 	@DataProvider(name = "db-inputs")
 	public Object [][] getDBData() {
 
-		List<LoginBean> list = new ELearningDAO().getLogins(); 
+		List<RegisterUserBean> list = new ELearningDAO().getRegisterDetails(); 
 		
 		Object[][] result = new Object[list.size()][]; 
 		int count = 0; 
-		for(LoginBean temp : list){
-			Object[]  obj = new Object[2]; 
-			obj[0] = temp.getUserName(); 
-			obj[1] = temp.getPassword(); 
-			
+		for(RegisterUserBean temp : list){
+			Object[]  obj = new Object[8]; 
+			obj[0] = temp.getfirstName();
+			obj[1] = temp.getlastName();
+			obj[2] = temp.getemail();
+			obj[3] = temp.getusername();
+			obj[4] = temp.getPassword();
+			obj[5] = temp.getconfirmpassword();
+			obj[6] = temp.getphonenumber();
+			obj[7] = temp.getlanguage();
 			result[count ++] = obj; 
 		}
 		
